@@ -46,11 +46,6 @@ export async function POST(request: NextRequest) {
     // Return user data (without password)
     const { password: _, ...userWithoutPassword } = user;
 
-    
-  console.log('Login attempt:', email);
-  console.log('Users in database:', users.length);
-  console.log('All users:', users.map(u => u.email));
-
     return NextResponse.json(
       {
         success: true,

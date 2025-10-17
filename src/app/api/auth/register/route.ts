@@ -39,9 +39,6 @@ export async function POST(request: NextRequest) {
 
     users.push(newUser);
 
-    console.log('User registered:', email);
-    console.log('Total users:', users.length);
-
     return NextResponse.json(
       {
         success: true,
