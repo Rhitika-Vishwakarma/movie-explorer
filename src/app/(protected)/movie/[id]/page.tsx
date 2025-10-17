@@ -1,5 +1,6 @@
 import { MovieDetail } from '@/components/movies/MovieDetail';
 import { notFound } from 'next/navigation';
+import { tmdbApi } from '@/lib/api/tmdb';
 
 interface PageProps {
   params: {
@@ -15,16 +16,8 @@ export default async function MovieDetailPage({ params }: PageProps) {
       notFound();
     }
 
-    // Fetch from your API route instead of direct TMDB
-    const response = await fetch(`http://localhost:3000/api/movies/${movieId}`, {
-      cache: 'no-store'
-    });
-
-    if (!response.ok) {
-      notFound();
-    }
-
-    const movie = await response.json();
+    // Call TMDB directly from server component
+    const movie = await tmdbApi.getMovieDetails(movieId);
 
     return (
       <div>
