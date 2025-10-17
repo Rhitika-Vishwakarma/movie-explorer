@@ -25,8 +25,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
-    if (!mounted) return;
-
     const root = window.document.documentElement;
     root.classList.remove('light', 'dark');
 
@@ -40,13 +38,12 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       root.classList.add(theme);
     }
 
-    localStorage.setItem(LOCAL_STORAGE_KEYS.THEME, theme);
+    if (mounted) {
+      localStorage.setItem(LOCAL_STORAGE_KEYS.THEME, theme);
+    }
   }, [theme, mounted]);
 
-  if (!mounted) {
-    return <>{children}</>;
-  }
-
+  // Render children immediately but theme toggle won't work until mounted
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>
       {children}
