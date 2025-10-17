@@ -10,8 +10,17 @@ export function middleware(request: NextRequest) {
   if (publicRoutes.includes(pathname)) {
     return NextResponse.next();
   }
+
+  // Check for auth in production - we use localStorage but need to verify
+  // Since middleware runs server-side, we redirect based on route patterns
+  const protectedRoutes = ['/movies', '/movie', '/favorites', '/search'];
+  const isProtectedRoute = protectedRoutes.some(route => pathname.startsWith(route));
   
-  // Allow all other routes (since we use localStorage, not cookies)
+  if (isProtectedRoute) {
+    // Let client-side auth handle it - will redirect via useEffect
+    return NextResponse.next();
+  }
+  
   return NextResponse.next();
 }
 
